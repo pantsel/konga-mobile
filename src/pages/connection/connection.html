@@ -1,0 +1,58 @@
+<!--
+  Generated template for the ConnectionPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="dark">
+    <ion-title>New Connection</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <div class="_header" text-center="" padding="" color="gray" margin-bottom="">
+    <img src="assets/img/connection.png" padding>
+  </div>
+
+  <form (submit)="createConnection()" [formGroup]="form">
+    <ion-list>
+
+      <ion-item>
+        <ion-label floating>Name <span color="danger">*</span></ion-label>
+        <ion-input type="text" [(ngModel)]="connection.name" formControlName="name"></ion-input>
+      </ion-item>
+
+      <ion-item class="item-clear" *ngIf="!form.controls.name.valid  && (form.controls.name.dirty || submitAttempt || formErrors.name)">
+        <p>{{formErrors.name || "The name is required."}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Kong Admin URL <span color="danger">*</span></ion-label>
+        <ion-input type="text" [(ngModel)]="connection.kong_admin_url" formControlName="kong_admin_url"></ion-input>
+      </ion-item>
+
+      <ion-item class="item-clear" *ngIf="!form.controls.kong_admin_url.valid  && (form.controls.kong_admin_url.dirty || submitAttempt || formErrors.kong_admin_url)">
+        <p>{{formErrors.kong_admin_url || "The URL to Kong Admin API is required."}}</p>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label floating>Kong API Key</ion-label>
+        <ion-input type="text" [(ngModel)]="connection.kong_api_key" formControlName="kong_api_key"></ion-input>
+      </ion-item>
+
+      <div padding>
+        <button ion-button color="primary" outline [disabled]="!form.valid" block>create connection</button>
+      </div>
+
+    </ion-list>
+  </form>
+
+
+
+</ion-content>

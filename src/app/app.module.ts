@@ -33,6 +33,13 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import {DashboardPage} from "../pages/dashboard/dashboard";
+import {ConnectionsPage} from "../pages/connections/connections";
+import {Connection} from "../providers/connection";
+import {ConnectionPage} from "../pages/connection/connection";
+import {ConnectionDetailsPage} from "../pages/connection-details/connection-details";
+import {ConnectionEditPage} from "../pages/connection-edit/connection-edit";
+import {DefaultListPage} from "../pages/default-list/default-list";
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -42,7 +49,7 @@ export function HttpLoaderFactory(http: Http) {
 
 export function provideSettings(storage: Storage) {
   /**
-   * The Settings provider takes a set of default settings for your app.
+   * The Settings provider takes a set of default-list settings for your app.
    *
    * You can add new settings options at any time. Once the settings are saved,
    * these values will not overwrite the saved values (this can be done manually if desired).
@@ -71,7 +78,13 @@ export function provideSettings(storage: Storage) {
     SignupPage,
     TabsPage,
     TutorialPage,
-    WelcomePage
+    WelcomePage,
+    DashboardPage,
+    ConnectionsPage,
+    ConnectionPage,
+    ConnectionDetailsPage,
+    ConnectionEditPage,
+    DefaultListPage
   ],
   imports: [
     BrowserModule,
@@ -102,7 +115,13 @@ export function provideSettings(storage: Storage) {
     SignupPage,
     TabsPage,
     TutorialPage,
-    WelcomePage
+    WelcomePage,
+    DashboardPage,
+    ConnectionsPage,
+    ConnectionPage,
+    ConnectionDetailsPage,
+    ConnectionEditPage,
+    DefaultListPage
   ],
   providers: [
     Api,
@@ -112,6 +131,7 @@ export function provideSettings(storage: Storage) {
     GoogleMaps,
     SplashScreen,
     StatusBar,
+    Connection,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler }

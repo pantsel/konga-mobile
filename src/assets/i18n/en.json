@@ -3,6 +3,7 @@
 
   "NAME": "Name",
   "EMAIL": "Email",
+  "IDENTIFIER" : "Username or Email",
   "USERNAME": "Username",
   "PASSWORD": "Password",
   "LOGIN": "Sign in",

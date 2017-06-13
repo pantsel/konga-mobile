@@ -1,39 +1,48 @@
-<ion-header>
+<ion-content scroll="false">
 
-  <ion-navbar>
-    <ion-title>{{ 'LOGIN_TITLE' | translate }}</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content>
+  <div class="splash-bg"></div>
+  <div class="splash-info" margin-bottom="">
+    <div class="splash-logo"></div>
+    <div class="splash-intro">
+      Elegant Kong GUI
+    </div>
+  </div>
   <form (submit)="doLogin()">
-    <ion-list>
+  <ion-list>
 
-      <ion-item>
-        <ion-label fixed>{{ 'EMAIL' | translate }}</ion-label>
-        <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
-      </ion-item>
+    <ion-item>
+      <ion-label floating>Username or Email</ion-label>
+      <ion-input type="email" [(ngModel)]="account.identifier" name="identifier"></ion-input>
+    </ion-item>
 
-      <!--
-      Want to use a Username instead of an Email? Here you go:
+    <ion-item>
+      <ion-label floating>{{ 'PASSWORD' | translate }}</ion-label>
+      <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
+    </ion-item>
 
-      <ion-item>
-        <ion-label floating>{{ 'USERNAME' | translate }}</ion-label>
-        <ion-input type="text" [(ngModel)]="account.username"></ion-input>
-      </ion-item>
-      -->
+    <ion-item>
+      <ion-label floating>Konga URL</ion-label>
+      <ion-input type="url" [(ngModel)]="kongaConnectionUrl" name="kongaConnectionUrl"></ion-input>
+    </ion-item>
 
-      <ion-item>
-        <ion-label fixed>{{ 'PASSWORD' | translate }}</ion-label>
-        <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
-      </ion-item>
 
-      <div padding>
-        <button ion-button color="primary" block>{{ 'LOGIN_BUTTON' | translate }}</button>
-      </div>
 
-    </ion-list>
-  </form>
+    <!--
+    Want to use a Username instead of an Email? Here you go:
+
+    <ion-item>
+      <ion-label floating>{{ 'USERNAME' | translate }}</ion-label>
+      <ion-input type="text" [(ngModel)]="account.username"></ion-input>
+    </ion-item>
+    -->
+
+    <div padding>
+      <button ion-button outline color="primary" block>{{ 'LOGIN_BUTTON' | translate }}</button>
+    </div>
+
+  </ion-list>
+</form>
+
+
+
 </ion-content>
