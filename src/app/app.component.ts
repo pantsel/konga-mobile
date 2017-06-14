@@ -29,6 +29,10 @@ import { User } from '../providers/user';
 
 import { Events, ModalController } from 'ionic-angular';
 
+import { SocketProvider } from '../providers/socket';
+
+
+
 @Component({
   template: `<ion-menu [content]="content">
     <ion-header>
@@ -76,9 +80,9 @@ export class MyApp {
     // { title: 'Search', component: SearchPage },
 
   ]
-
   constructor(private translate: TranslateService,
               private platform: Platform,
+              private socketProvider : SocketProvider,
               settings: Settings,
               private config: Config,
               private events : Events,
@@ -86,7 +90,9 @@ export class MyApp {
               private user : User,
               private statusBar: StatusBar,
               private splashScreen: SplashScreen) {
+
     this.initTranslate();
+    socketProvider.initialize();
 
     this.user.isAuthenticated().then((isAuthenticated) => {
       if(isAuthenticated) {
@@ -115,6 +121,9 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+
+
+
 
       // this.platform.registerBackButtonAction(() => {
       //

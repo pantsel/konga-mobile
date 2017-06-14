@@ -3,6 +3,7 @@ import {IonicPage, NavController, NavParams, Events, ModalController} from 'ioni
 import {User} from '../../providers/user'
 import {ConnectionPage} from '../connection/connection';
 
+
 /**
  * Generated class for the MainPage page.
  *
@@ -14,7 +15,7 @@ import {ConnectionPage} from '../connection/connection';
     selector: 'page-main',
     templateUrl: 'main.html',
 })
-export class MainPage {
+export class MainPage implements OnInit{
 
     user: any;
 
@@ -28,10 +29,13 @@ export class MainPage {
 
     }
 
+    ngOnInit() {
+
+    }
+
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad MainPage');
-
 
     }
 

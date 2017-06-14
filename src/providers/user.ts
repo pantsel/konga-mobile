@@ -28,7 +28,6 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class User {
     _user: any;
-    _events : object = {};
 
     constructor(public http: Http, public api: Api, public storage: Storage, public events: Events) {
     }
@@ -45,6 +44,7 @@ export class User {
         return this.api.post('login', accountInfo)
             .then(res => {
                 this._loggedIn(res);
+                this.events.publish("user:login",res.user)
 
             }, err => {
                 console.error('ERROR', err);

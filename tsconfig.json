@@ -3,6 +3,7 @@
     "allowSyntheticDefaultImports": true,
     "declaration": false,
     "emitDecoratorMetadata": true,
+    "allowJs": true,
     "experimentalDecorators": true,
     "lib": [
       "dom",

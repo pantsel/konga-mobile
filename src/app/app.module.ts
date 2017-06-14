@@ -26,6 +26,8 @@ import { Items } from '../mocks/providers/items';
 import { Settings } from '../providers/settings';
 import { User } from '../providers/user';
 
+import {SailsModule} from "angular2-sails";
+
 import { Camera } from '@ionic-native/camera';
 import { GoogleMaps } from '@ionic-native/google-maps';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -41,6 +43,7 @@ import {ConnectionDetailsPage} from "../pages/connection-details/connection-deta
 import {ConnectionEditPage} from "../pages/connection-edit/connection-edit";
 import {DefaultListPage} from "../pages/default-list/default-list";
 import {MainPage} from "../pages/main/main";
+import { SocketProvider } from '../providers/socket';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -91,6 +94,7 @@ export function provideSettings(storage: Storage) {
   imports: [
     BrowserModule,
     HttpModule,
+    SailsModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -137,7 +141,8 @@ export function provideSettings(storage: Storage) {
     Connection,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    SocketProvider
   ]
 })
 export class AppModule { }

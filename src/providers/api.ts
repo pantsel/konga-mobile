@@ -14,6 +14,13 @@ export class Api {
     constructor(public http: Http, public storage: Storage) {
     }
 
+    getUrl() {
+        return this.storage.get("_kongaConnectionUrl")
+            .then(_kongaConnectionUrl => {
+                return _kongaConnectionUrl;
+            })
+    }
+
     makeRequestOptions() {
 
         let headers = new Headers();
