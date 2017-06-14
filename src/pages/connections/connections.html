@@ -43,7 +43,7 @@
       <ion-icon
               (click)="toggleActive($event,item)"
               *ngIf="!item.working" name="star-outline"
-              item-start color="{{user && user.node && user.node.kong_admin_url == item.kong_admin_url ? 'warning' : ''}}"></ion-icon>
+              item-start color="{{isActive(item) ? 'warning' : ''}}"></ion-icon>
       <h2>{{item.name}}</h2>
       <h3>{{item.kong_admin_url}}</h3>
 

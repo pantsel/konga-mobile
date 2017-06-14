@@ -27,6 +27,8 @@ import { TranslateService } from '@ngx-translate/core'
 
 import { User } from '../providers/user';
 
+import { Events, ModalController } from 'ionic-angular';
+
 @Component({
   template: `<ion-menu [content]="content">
     <ion-header>
@@ -79,6 +81,8 @@ export class MyApp {
               private platform: Platform,
               settings: Settings,
               private config: Config,
+              private events : Events,
+              private modalCtrl: ModalController,
               private user : User,
               private statusBar: StatusBar,
               private splashScreen: SplashScreen) {
@@ -92,6 +96,14 @@ export class MyApp {
       }
     }, (err) => {
       this.rootPage = LoginPage;
+    });
+
+    this.events.subscribe('user:updated', (user, time) => {
+      console.log('user:updated', user, 'at', time);
+
+      if (!user.node) {
+        this.presentCreateConnectionModal();
+      }
     });
 
 
@@ -155,5 +167,13 @@ export class MyApp {
   logout() {
     this.user.logout();
     this.nav.setRoot(LoginPage);
+  }
+
+  presentCreateConnectionModal() {
+    let modal = this.modalCtrl.create(ConnectionPage,{
+      isModal : true,
+      setConnectionAsDefaultAfterCreate : true
+    });
+    modal.present();
   }
 }

@@ -7,8 +7,15 @@
 <ion-header>
 
   <ion-navbar color="dark">
-    <ion-title>New Connection</ion-title>
+    <ion-title>Create Connection</ion-title>
+    <ion-buttons end>
+      <button *ngIf="isModal" ion-button icon-only (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
+
+
 
 </ion-header>
 
@@ -16,7 +23,9 @@
 <ion-content>
 
   <div class="_header" text-center="" padding="" color="gray" margin-bottom="">
-    <img src="assets/img/connection.png" padding>
+    <img src="assets/img/connection.png">
+    <h1 *ngIf="isModal">Welcome</h1>
+    <p  *ngIf="isModal">First of all, lets setup a connection to Kong Admin.</p>
   </div>
 
   <form (submit)="createConnection()" [formGroup]="form">

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, AlertController, Events  } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController, Events, ModalController  } from 'ionic-angular';
 import { Connection } from '../../providers/connection';
 import { User } from '../../providers/user'
 import { Api } from '../../providers/api';
@@ -28,14 +28,17 @@ export class ConnectionsPage extends DefaultListPage{
               public alertCtrl : AlertController,
               public api : Api,
               public events : Events,
-              public authUser : User) {
-    super(navCtrl,navParams,authUser,toastCtrl, alertCtrl,events);
+              public authUser : User,
+              public modalCtrl: ModalController) {
+    super(navCtrl,navParams,authUser,toastCtrl, alertCtrl,events,modalCtrl);
 
     this.setProvider(connection)
     this.setPages({
       create : ConnectionPage,
       show   : ConnectionDetailsPage
     })
+
+
 
   }
 
@@ -45,7 +48,7 @@ export class ConnectionsPage extends DefaultListPage{
     $event.stopPropagation()
 
     let active = true;
-    if(this.user && this.user.node && this.user.node.kong_admin_url == item.kong_admin_url) {
+    if(this.isActive(item)) {
       active = false;
     }
 
@@ -77,7 +80,7 @@ export class ConnectionsPage extends DefaultListPage{
   }
 
   isActive(connection) {
-    return this.user && this.user.node && this.user.node.kong_admin_url == connection.kong_admin_url
+    return this.user && this.user.node && this.user.node.id == connection.id
   }
 
 
@@ -99,7 +102,7 @@ export class ConnectionsPage extends DefaultListPage{
   onDelete($event,item) {
     $event.stopPropagation()
 
-    if(this.user && this.user.node && this.user.node.kong_admin_url == item.kong_admin_url) {
+    if(this.isActive(item)) {
       this.showToast("You can't delete an active connection. Deactivate it and try again.")
 
       return false;

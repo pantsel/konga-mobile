@@ -40,6 +40,7 @@ import {ConnectionPage} from "../pages/connection/connection";
 import {ConnectionDetailsPage} from "../pages/connection-details/connection-details";
 import {ConnectionEditPage} from "../pages/connection-edit/connection-edit";
 import {DefaultListPage} from "../pages/default-list/default-list";
+import {MainPage} from "../pages/main/main";
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -65,6 +66,7 @@ export function provideSettings(storage: Storage) {
 @NgModule({
   declarations: [
     MyApp,
+    MainPage,
     CardsPage,
     ContentPage,
     ItemCreatePage,
@@ -102,6 +104,7 @@ export function provideSettings(storage: Storage) {
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    MainPage,
     CardsPage,
     ContentPage,
     ItemCreatePage,

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, AlertController, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController, Events, ModalController } from 'ionic-angular';
 import { User } from '../../providers/user'
+import {MainPage} from "../main/main";
+import * as _ from 'lodash';
 
 /**
  * Generated class for the DefaultPage page.
@@ -13,7 +15,7 @@ import { User } from '../../providers/user'
   selector: 'page-default-list',
   templateUrl: 'default-list.html',
 })
-export class DefaultListPage {
+export class DefaultListPage extends MainPage{
 
   items : any;
   user : any;
@@ -21,19 +23,30 @@ export class DefaultListPage {
   busy : boolean = false;
   refresher : any;
   pages : any;
+  params : {sort : string} = {sort : 'createdAt DESC'}
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public authUser : User,
               public toastCtrl : ToastController,
               public alertCtrl : AlertController,
-              public events : Events
+              public events : Events,
+              public modalCtrl: ModalController
               ) {
 
-    events.subscribe('user:updated', (user, time) => {
-      // user and time are the same arguments passed in `events.publish(user, time)`
-      console.log('user:updated', user, 'at', time);
+    super(navCtrl,navParams,authUser,events,modalCtrl)
+
+    this.events.subscribe('items:updated', () => {
+      this.loadItems();
     });
+
+    this.events.subscribe('user:updated', (user, time) => {
+      console.log('user:updated', user, 'at', time);
+
+      this.user = user;
+    });
+
+
 
   }
 
@@ -46,35 +59,40 @@ export class DefaultListPage {
   }
 
   ionViewDidLoad() {
+    super.ionViewDidLoad();
+
     console.log('ionViewDidLoad DefaultPage');
+
+
   }
 
+
+  ionViewWillLeave() {
+
+    super.ionViewWillLeave()
+
+    // Unsubscribe from user events
+    // this.events.unsubscribe('user:updated')
+
+  }
+
+
   ionViewDidEnter() {
-    this.initUser();
+    super.ionViewDidEnter();
     this.loadItems();
   }
 
-  initUser() {
-    this.authUser.getUser()
-        .then(user => {
-          this.user = user;
-          console.log("DEFAULT PAGE: initUser =>",this.user)
 
-          if(!this.user.node) {
-            alert("No Node")
-          }
-        })
-  }
 
   loadItems() {
 
     this.busy =true;
 
-    this.provider.load({}).then((items) => {
+    this.provider.load(_.merge({},this.params)).then((items) => {
 
       console.log("DEFAULT PAGE : loadItems",items)
       this.items = items;
-      // if(this.refresher) this.refresher.complete();
+      if(this.refresher) this.refresher.complete();
       this.busy = false;
 
     }, (err) => {
