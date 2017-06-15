@@ -15,7 +15,7 @@ import {ConnectionPage} from '../connection/connection';
     selector: 'page-main',
     templateUrl: 'main.html',
 })
-export class MainPage implements OnInit{
+export class MainPage {
 
     user: any;
 
@@ -28,11 +28,6 @@ export class MainPage implements OnInit{
 
 
     }
-
-    ngOnInit() {
-
-    }
-
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad MainPage');

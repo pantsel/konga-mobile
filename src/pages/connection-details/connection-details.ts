@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { ConnectionPage } from '../connection/connection'
-import { ConnectionsPage } from '../connections/connections'
+import { NodeHealthChecksPage } from '../node-health-checks/node-health-checks'
 import { ConnectionEditPage } from '../connection-edit/connection-edit'
 
 /**
@@ -19,7 +18,7 @@ export class ConnectionDetailsPage {
 
   connection : any;
   tab1Root = ConnectionEditPage
-  tab2Root = ConnectionsPage
+  tab2Root = NodeHealthChecksPage
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.connection = navParams.get("item")

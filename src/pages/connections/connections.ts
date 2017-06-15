@@ -43,6 +43,30 @@ export class ConnectionsPage extends DefaultListPage{
   }
 
 
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad NodeHealthChecksPage');
+  }
+
+  ionViewDidEnter() {
+    super.ionViewDidEnter();
+    this.events.subscribe("node:health_checks",data => {
+
+
+      for(let item of this.items) {
+        if(data.node_id == item.id) {
+          item.health_check_details = data
+        }
+      }
+
+    })
+  }
+
+  ionViewWillLeave() {
+    super.ionViewWillLeave();
+    this.events.unsubscribe("node:health_checks")
+  }
+
+
   toggleActive($event,item) {
 
     $event.stopPropagation()

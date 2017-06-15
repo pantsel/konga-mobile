@@ -81,3 +81,27 @@ $colors: (
 
 @import "roboto";
 @import "noto-sans";
+
+
+// Custom
+.text-success {
+  color : color($colors, success, base) !important;
+}
+
+.text-danger {
+  color : color($colors, danger, base) !important;
+}
+
+.text-warning {
+  color : color($colors, warning, base) !important;
+}
+
+.text-muted {
+  color : #bbb !important;
+}
+
+p {
+  ion-icon:before{
+    vertical-align:middle;
+  }
+}

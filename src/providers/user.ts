@@ -44,7 +44,6 @@ export class User {
         return this.api.post('login', accountInfo)
             .then(res => {
                 this._loggedIn(res);
-                this.events.publish("user:login",res.user)
 
             }, err => {
                 console.error('ERROR', err);
@@ -106,27 +105,32 @@ export class User {
 
     update(data) {
 
+
+        console.log("updateuserrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",data)
+
         return this.storage.get("_user")
             .then(user => {
                 return this.api.put('api/user/' + user.id, data)
                     .then(user => {
 
-                        if (user[0].node) {
-                            return this.api.get('api/kongnode/' + user[0].node)
-                                .then(node => {
-                                    user[0].node = node;
-                                    this.storage.set("_user", user[0])
-                                    this.events.publish('user:updated', user[0], Date.now());
-                                    return user[0];
+                        return user[0];
 
-                                }, err => {
-                                    return err;
-                                })
-                        } else {
-                            this.storage.set("_user", user[0])
-                            this.events.publish('user:updated', user[0], Date.now());
-                            return user[0]
-                        }
+                        // if (user[0].node) {
+                        //     return this.api.get('api/kongnode/' + user[0].node)
+                        //         .then(node => {
+                        //             user[0].node = node;
+                        //             this.storage.set("_user", user[0])
+                        //             // this.events.publish('user:updated', user[0], Date.now());
+                        //             return user[0];
+                        //
+                        //         }, err => {
+                        //             return err;
+                        //         })
+                        // } else {
+                        //     this.storage.set("_user", user[0])
+                        //     // this.events.publish('user:updated', user[0], Date.now());
+                        //     return user[0]
+                        // }
 
 
                     }, err => {
@@ -156,5 +160,6 @@ export class User {
         this._user = resp.user;
         this.storage.set('_user', resp.user);
         this.storage.set('_token', resp.token);
+        this.events.publish("user:login",resp.user)
     }
 }

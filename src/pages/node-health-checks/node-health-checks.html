@@ -1,0 +1,87 @@
+<!--
+  Generated template for the NodeHealthChecksPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!--<ion-header>-->
+
+  <!--<ion-navbar>-->
+    <!--<ion-title>{{connection.name}}</ion-title>-->
+  <!--</ion-navbar>-->
+
+<!--</ion-header>-->
+
+
+<ion-content>
+    <ion-item>
+        <ion-label>Enable Health Checks</ion-label>
+        <ion-toggle [(ngModel)]="connection.health_checks" (ionChange)="toggleHealthChecks()" checked="false"></ion-toggle>
+    </ion-item>
+    <div padding>
+
+        <div *ngIf="!connection.health_check_details" padding>
+            <h3>No information available...</h3>
+            <p *ngIf="!connection.health_checks">
+                You need to enable health checks for this connection
+                in order to start getting status information.
+            </p>
+            <p *ngIf="connection.health_checks">
+                Waiting for data...
+            </p>
+        </div>
+        <p *ngIf="connection.health_checks" class="text-muted">
+            Administrators can also be notified via email
+            when a connection is down or unresponsive
+            by enabling <strong>Email Notifications</strong> in <strong>settings</strong>.
+        </p>
+    </div>
+
+    <ion-list *ngIf="connection.health_check_details">
+        <ion-item>
+            Last known status
+            <ion-note *ngIf="connection.health_check_details.firstSucceeded" item-end class="text-success">
+                Healthy
+            </ion-note>
+            <ion-note *ngIf="!connection.health_check_details.firstSucceeded" item-end>
+                Down or unresponsive
+            </ion-note>
+        </ion-item>
+        <ion-item>
+            Last checked
+            <ion-note item-end="">
+                {{moment(connection.health_check_details.lastChecked).fromNow()}}
+            </ion-note>
+        </ion-item>
+        <ion-item>
+            Last failed
+            <ion-note item-end="">
+                {{connection.health_check_details.lastFailed ? moment(connection.health_check_details.lastFailed).format("dddd, MMMM Do YYYY, HH:mm:ss") : "Never"}}
+            </ion-note>
+        </ion-item>
+        <ion-item>
+            Last notified
+            <ion-note item-end="">
+                {{connection.health_check_details.lastNotified ? moment(connection.health_check_details.lastNotified).fromNow() : 'Never'}}
+            </ion-note>
+        </ion-item>
+        <ion-item>
+            <span *ngIf="moment(connection.health_check_details.lastSucceeded || 0) > moment(connection.health_check_details.lastFailed || 0)">
+                Uptime
+            </span>
+            <span *ngIf="moment(connection.health_check_details.lastSucceeded || 0) <= moment(connection.health_check_details.lastFailed || 0)">
+                Downtime
+            </span>
+            <ion-note item-end="" *ngIf="moment(connection.health_check_details.lastSucceeded || 0) > moment(connection.health_check_details.lastFailed || 0)">
+                {{moment.duration(moment().diff(moment(connection.health_check_details.firstSucceeded))).humanize()}}
+            </ion-note>
+            <ion-note item-end="" *ngIf="moment(connection.health_check_details.lastSucceeded || 0) <= moment(connection.health_check_details.lastFailed || 0)">
+                {{moment.duration(moment().diff(moment(connection.health_check_details.firstFailed))).humanize()}}
+            </ion-note>
+            
+        </ion-item>
+
+    </ion-list>
+
+
+</ion-content>

@@ -4,6 +4,8 @@ import { Platform, Nav, Config } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+
+
 import { CardsPage } from '../pages/cards/cards';
 import { ContentPage } from '../pages/content/content';
 import {FirstRunPage, MainPage} from '../pages/pages';
@@ -110,6 +112,7 @@ export class MyApp {
       if (!user.node) {
         this.presentCreateConnectionModal();
       }
+
     });
 
 

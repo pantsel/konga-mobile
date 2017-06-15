@@ -44,6 +44,7 @@ import {ConnectionEditPage} from "../pages/connection-edit/connection-edit";
 import {DefaultListPage} from "../pages/default-list/default-list";
 import {MainPage} from "../pages/main/main";
 import { SocketProvider } from '../providers/socket';
+import {NodeHealthChecksPage} from "../pages/node-health-checks/node-health-checks";
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -89,7 +90,8 @@ export function provideSettings(storage: Storage) {
     ConnectionPage,
     ConnectionDetailsPage,
     ConnectionEditPage,
-    DefaultListPage
+    DefaultListPage,
+    NodeHealthChecksPage
   ],
   imports: [
     BrowserModule,
@@ -128,7 +130,8 @@ export function provideSettings(storage: Storage) {
     ConnectionPage,
     ConnectionDetailsPage,
     ConnectionEditPage,
-    DefaultListPage
+    DefaultListPage,
+    NodeHealthChecksPage
   ],
   providers: [
     Api,

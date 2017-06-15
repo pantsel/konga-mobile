@@ -44,13 +44,31 @@
               (click)="toggleActive($event,item)"
               *ngIf="!item.working" name="star-outline"
               item-start color="{{isActive(item) ? 'warning' : ''}}"></ion-icon>
+
+
       <h2>{{item.name}}</h2>
       <h3>{{item.kong_admin_url}}</h3>
 
+      <p *ngIf="!item.health_checks" class="text-muted">
+        <ion-icon name="heart-outline"></ion-icon>&nbsp;
+        HC disabled
+      </p>
+      <p
+              class="text-danger"
+              *ngIf="item.health_checks && item.health_check_details && !item.health_check_details.isHealthy">
+        <ion-icon name="heart-outline"></ion-icon>&nbsp;
+        Down or unresponsive
+      </p>
+      <p
+              class="text-success"
+              *ngIf="item.health_checks&& item.health_check_details && item.health_check_details.isHealthy">
+        <ion-icon name="heart-outline"></ion-icon>&nbsp;
+        Healthy
+      </p>
 
-      <p>
-        <!--<ion-badge *ngIf="user && user.node && user.node.kong_admin_url == item.kong_admin_url" color="success">Active</ion-badge>-->
-        <ion-badge color="gray">HC disabled</ion-badge>
+      <p *ngIf="item.health_checks && !item.health_check_details" class="text-warning">
+        <ion-icon name="refresh"></ion-icon>&nbsp;
+        Waiting for data...
       </p>
 
 
