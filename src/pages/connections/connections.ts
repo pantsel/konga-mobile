@@ -23,15 +23,18 @@ export class ConnectionsPage extends DefaultListPage{
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public connection : Connection,
+              public authUser : User,
               public toastCtrl : ToastController,
               public alertCtrl : AlertController,
-              public api : Api,
               public events : Events,
-              public authUser : User,
-              public modalCtrl: ModalController) {
-    super(navCtrl,navParams,authUser,toastCtrl, alertCtrl,events,modalCtrl);
+              public modalCtrl: ModalController,
+              public api : Api,
+              public connection : Connection
+  ) {
 
+    super(navCtrl,navParams,authUser,toastCtrl,alertCtrl,events,modalCtrl,api);
+
+    this.params = {sort : 'createdAt DESC'}
     this.setProvider(connection)
     this.setPages({
       create : ConnectionPage,
@@ -132,7 +135,7 @@ export class ConnectionsPage extends DefaultListPage{
       return false;
     }
 
-    this.delete(item);
+    this.delete($event,item);
   }
 
 }

@@ -24,10 +24,6 @@ export class SocketProvider {
                 private storage : Storage,
                 public _sailsService:SailsService) {
 
-
-        this.events.subscribe("user:login", () => {
-            this.initialize();
-        })
     }
 
     initialize() {
@@ -113,9 +109,6 @@ export class SocketProvider {
 
                     this._sailsService.on(data.room)
                         .subscribe(obj => {
-
-                            console.log("######################################",obj)
-
                             this.storage.set("_user",obj)
                             this.events.publish("user:updated",obj)
                         });

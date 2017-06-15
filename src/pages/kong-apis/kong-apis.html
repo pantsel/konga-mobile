@@ -1,0 +1,64 @@
+<!--
+  Generated template for the KongApisPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="dark">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>APIs</ion-title>
+    <ion-buttons end>
+      <ion-spinner color="light" *ngIf="busy"></ion-spinner>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-searchbar
+          [(ngModel)]="searchText"
+          animated = true
+          placeholder = "Search APIs..."
+          showCancelButton="true"
+          (ionInput)="setFilteredItems()">
+  </ion-searchbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="crescent"
+            refreshingText="Refreshing...">
+
+    </ion-refresher-content>
+
+  </ion-refresher>
+
+
+
+  <div padding *ngIf="items && !items.length" text-center margin="">
+    <h4>No APIs found...</h4>
+  </div>
+
+  <ion-list>
+    <button  ion-item *ngFor="let item of items">
+      <h2>{{item.name}}</h2>
+      <h3>{{item.upstream_url}}</h3>
+      <p>{{moment(item.created_at).format("dddd, MMMM Do YYYY, HH:mm")}}</p>
+
+
+      <ion-icon name="trash" color="danger" item-end="" (click)="delete($event,item)"></ion-icon>
+    </button>
+  </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <ion-fab right bottom>
+    <button ion-fab color="primary" (click)="createItem()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+</ion-content>

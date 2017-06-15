@@ -32,6 +32,7 @@ import { User } from '../providers/user';
 import { Events, ModalController } from 'ionic-angular';
 
 import { SocketProvider } from '../providers/socket';
+import {KongApisPage} from "../pages/kong-apis/kong-apis";
 
 
 
@@ -44,11 +45,14 @@ import { SocketProvider } from '../providers/socket';
     </ion-header>
 
     <ion-content>
-      <ion-list>
+      <ion-list no-lines>
         <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+          <ion-icon name="{{p.icon}}" item-start></ion-icon>
           {{p.title}}
         </button>
+        <ion-item></ion-item>
         <button menuClose ion-item (click)="logout()">
+           <ion-icon name="exit" item-start></ion-icon>
             Logout
         </button>
       </ion-list>
@@ -65,8 +69,9 @@ export class MyApp {
 
   pages: any[] = [
     // { title: 'Login', component: LoginPage },
-    { title: 'Dashboard', component: DashboardPage },
-    { title: 'Connections', component: ConnectionsPage },
+    { title: 'Dashboard', component: DashboardPage, icon : "speedometer" },
+    { title: 'APIs', component: KongApisPage, icon : "cloud-circle" },
+    { title: 'Connections', component: ConnectionsPage, icon : "git-network" },
 
     // { title: 'Tutorial', component: TutorialPage },
     // { title: 'Welcome', component: WelcomePage },
@@ -106,16 +111,6 @@ export class MyApp {
       this.rootPage = LoginPage;
     });
 
-    this.events.subscribe('user:updated', (user, time) => {
-      console.log('user:updated', user, 'at', time);
-
-      if (!user.node) {
-        this.presentCreateConnectionModal();
-      }
-
-    });
-
-
   }
 
   ionViewDidLoad() {
@@ -152,6 +147,7 @@ export class MyApp {
       //   }
       // });
     });
+
   }
 
   initTranslate() {
@@ -181,11 +177,5 @@ export class MyApp {
     this.nav.setRoot(LoginPage);
   }
 
-  presentCreateConnectionModal() {
-    let modal = this.modalCtrl.create(ConnectionPage,{
-      isModal : true,
-      setConnectionAsDefaultAfterCreate : true
-    });
-    modal.present();
-  }
+
 }

@@ -42,10 +42,19 @@ export class MainPage {
 
     ionViewWillLeave() {
         // Unsubscribe from user events
-        // this.events.unsubscribe('user:updated')
-
+        this.events.unsubscribe('user:updated')
     }
 
+    ionViewWillEnter() {
+        this.events.subscribe('user:updated', (user, time) => {
+            console.log('user:updated', user, 'at', time);
+            this.user = user;
+
+            if (!user.node) {
+                this.presentCreateConnectionModal();
+            }
+        });
+    }
 
     initUser() {
         this.authUser.getUser()
@@ -54,13 +63,12 @@ export class MainPage {
                 console.log("MAIN PAGE: initUser =>", this.user)
 
                 if (!this.user.node) {
-                    this.presentModal();
+                    this.presentCreateConnectionModal();
                 }
             })
     }
 
-
-    presentModal() {
+    presentCreateConnectionModal() {
         let modal = this.modalCtrl.create(ConnectionPage,{
             isModal : true,
             setConnectionAsDefaultAfterCreate : true

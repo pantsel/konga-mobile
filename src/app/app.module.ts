@@ -45,6 +45,8 @@ import {DefaultListPage} from "../pages/default-list/default-list";
 import {MainPage} from "../pages/main/main";
 import { SocketProvider } from '../providers/socket';
 import {NodeHealthChecksPage} from "../pages/node-health-checks/node-health-checks";
+import {KongApisPage} from "../pages/kong-apis/kong-apis";
+import { KongApiProvider } from '../providers/kong-api/kong-api';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -91,7 +93,8 @@ export function provideSettings(storage: Storage) {
     ConnectionDetailsPage,
     ConnectionEditPage,
     DefaultListPage,
-    NodeHealthChecksPage
+    NodeHealthChecksPage,
+    KongApisPage,
   ],
   imports: [
     BrowserModule,
@@ -131,7 +134,8 @@ export function provideSettings(storage: Storage) {
     ConnectionDetailsPage,
     ConnectionEditPage,
     DefaultListPage,
-    NodeHealthChecksPage
+    NodeHealthChecksPage,
+    KongApisPage,
   ],
   providers: [
     Api,
@@ -145,7 +149,8 @@ export function provideSettings(storage: Storage) {
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    SocketProvider
+    SocketProvider,
+    KongApiProvider
   ]
 })
 export class AppModule { }

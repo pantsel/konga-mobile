@@ -10,27 +10,9 @@ import 'rxjs/add/operator/toPromise';
 export class Connection {
   _connection : any;
 
-  constructor(public http: Http, public api: Api, public storage: Storage,) {
-
-
+  constructor(public http: Http, public api: Api, public storage: Storage) {
 
   }
-
-  makeRequestOptions(){
-
-
-    return this.storage.get('_token')
-        .then(token => {
-          let headers = new Headers();
-          headers.append('Content-Type', 'application/json');
-          headers.append('Authorization', 'Bearer ' + token);
-
-          return new RequestOptions({ headers: headers });
-        })
-
-
-  }
-
 
   create(data:any) {
       return this.api.post('api/kongnode', data);

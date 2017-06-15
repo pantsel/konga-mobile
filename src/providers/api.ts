@@ -82,6 +82,44 @@ export class Api {
 
     }
 
+
+    getCustom(endpoint: string, params?: any, options?: RequestOptions) {
+
+        return this.makeRequestOptions()
+            .then(defaultOptions => {
+
+                options = _.merge(options,defaultOptions)
+
+                // Support easy query params for GET requests
+                if (params) {
+                    let p = new URLSearchParams();
+                    for (let k in params) {
+                        p.set(k, params[k]);
+                    }
+                    // Set the search field if we have params and don't already have
+                    // a search field set in options.
+                    options.search = !options.search && p || options.search;
+                }
+
+
+                return new Promise((resolve, reject) => {
+
+                    let seq = this.http.get(endpoint,options).share();
+
+                    seq
+                        .map(res => res.json())
+                        .subscribe(res => {
+
+                            resolve(res)
+                        }, err => {
+
+                            reject(err)
+                        });
+                });
+            })
+
+    }
+
     post(endpoint: string, body: any, options?: RequestOptions) {
 
 
@@ -137,7 +175,6 @@ export class Api {
                     let seq = this.http.delete(this.url + '/' + endpoint, defaultOptions).share();
 
                     seq
-                        .map(res => res.json())
                         .subscribe(res => {
                             resolve(res)
                         }, err => {
