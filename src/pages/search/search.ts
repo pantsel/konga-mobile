@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-
-import { ItemDetailPage } from '../item-detail/item-detail';
-
-import { Item } from '../../models/item';
-
-import { Items } from '../../providers/providers';
+import { NavController, NavParams, ToastController } from 'ionic-angular';
+import moment from 'moment';
 
 
 @Component({
@@ -13,32 +8,88 @@ import { Items } from '../../providers/providers';
   templateUrl: 'search.html'
 })
 export class SearchPage {
-  
+
+  moment : any = moment;
   currentItems: any = [];
+  provider : any;
+  callback : any;
+  items : any = [];
+  filteredItems : any = [];
+  busy  : boolean = false;
+  searchText : string = '';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public items: Items) { }
+  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl : ToastController) {
 
-  /**
-   * Perform a service for the proper items.
-   */
-  getItems(ev) {
-    let val = ev.target.value;
-    if (!val || !val.trim()) {
-      this.currentItems = [];
-      return;
+    this.provider = this.navParams.get("provider")
+
+  }
+
+  ionViewWillEnter() {
+    this.callback = this.navParams.get("callback")
+  }
+
+  ionViewDidEnter() {
+    this.loadItems();
+  }
+
+
+  loadItems() {
+
+    if(!this.provider) return;
+
+    this.busy =true;
+
+    this.provider.load({}).then(response => {
+
+      console.log("DEFAULT PAGE : loadItems",response)
+      let items = response.data || response;
+      this.items = items;
+      this.filteredItems = this.setFilteredItems();
+      this.busy = false;
+
+    }, (err) => {
+      this.showToast("Failed to load items. Make sure you are connected to the internet.")
+      this.busy = false;
+    });
+  }
+
+
+  showToast(message) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'top'
+    });
+    toast.present();
+  }
+
+
+  filterItems(searchText,property? : string){
+    return this.items.filter((item) => {
+      return item[property || 'name'].toLowerCase().indexOf(searchText.toLowerCase()) > -1;
+    });
+
+  }
+
+
+  setFilteredItems(property? : string) {
+    if(!this.searchText) {
+      this.filteredItems = []
+    }else{
+      this.filteredItems = this.filterItems(this.searchText,property);
     }
-    this.currentItems = this.items.query({
-      name: val
-    });
   }
 
-  /**
-   * Navigate to the detail page for this item.
-   */
-  openItem(item: Item) {
-    this.navCtrl.push(ItemDetailPage, {
-      item: item
-    });
+
+  onSelectItem(item) {
+
+    // this.navCtrl.pop();
+    this.callback(item)
+
   }
+
+
+
+
 
 }

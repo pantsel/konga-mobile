@@ -4,6 +4,7 @@ import {DefaultListPage} from "../default-list/default-list";
 import { User } from '../../providers/user'
 import { Api } from '../../providers/api'
 import {KongApiProvider} from "../../providers/kong-api/kong-api";
+import { KongApiPage } from "../kong-api/kong-api";
 
 /**
  * Generated class for the KongApisPage page.
@@ -33,6 +34,9 @@ export class KongApisPage extends DefaultListPage{
 
     this.params = {size : 50};
     this.setProvider(kongApi)
+    this.pages = {
+      show : KongApiPage
+    }
 
   }
 

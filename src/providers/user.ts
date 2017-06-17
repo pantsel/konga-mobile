@@ -106,31 +106,12 @@ export class User {
     update(data) {
 
 
-        console.log("updateuserrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",data)
-
         return this.storage.get("_user")
             .then(user => {
                 return this.api.put('api/user/' + user.id, data)
                     .then(user => {
 
                         return user[0];
-
-                        // if (user[0].node) {
-                        //     return this.api.get('api/kongnode/' + user[0].node)
-                        //         .then(node => {
-                        //             user[0].node = node;
-                        //             this.storage.set("_user", user[0])
-                        //             // this.events.publish('user:updated', user[0], Date.now());
-                        //             return user[0];
-                        //
-                        //         }, err => {
-                        //             return err;
-                        //         })
-                        // } else {
-                        //     this.storage.set("_user", user[0])
-                        //     // this.events.publish('user:updated', user[0], Date.now());
-                        //     return user[0]
-                        // }
 
 
                     }, err => {

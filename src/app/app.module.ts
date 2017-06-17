@@ -47,6 +47,13 @@ import { SocketProvider } from '../providers/socket';
 import {NodeHealthChecksPage} from "../pages/node-health-checks/node-health-checks";
 import {KongApisPage} from "../pages/kong-apis/kong-apis";
 import { KongApiProvider } from '../providers/kong-api/kong-api';
+import {KongApiEditPage} from "../pages/kong-api-edit/kong-api-edit";
+import {KongApiPage} from "../pages/kong-api/kong-api";
+import {KongApiHealthChecksPage} from "../pages/kong-api-health-checks/kong-api-health-checks";
+import {KongApiPluginsPage} from "../pages/kong-api-plugins/kong-api-plugins";
+import { KongPluginsProvider } from '../providers/kong-plugins/kong-plugins';
+import { KeysPipe } from '../pipes/keys/keys';
+import {KongPluginPage} from "../pages/kong-plugin/kong-plugin";
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -95,6 +102,12 @@ export function provideSettings(storage: Storage) {
     DefaultListPage,
     NodeHealthChecksPage,
     KongApisPage,
+    KongApiPage,
+    KongApiEditPage,
+    KongApiHealthChecksPage,
+    KongApiPluginsPage,
+    KeysPipe,
+    KongPluginPage
   ],
   imports: [
     BrowserModule,
@@ -136,6 +149,11 @@ export function provideSettings(storage: Storage) {
     DefaultListPage,
     NodeHealthChecksPage,
     KongApisPage,
+    KongApiPage,
+    KongApiEditPage,
+    KongApiHealthChecksPage,
+    KongApiPluginsPage,
+    KongPluginPage
   ],
   providers: [
     Api,
@@ -150,7 +168,9 @@ export function provideSettings(storage: Storage) {
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     SocketProvider,
-    KongApiProvider
+    KongApiProvider,
+    KongPluginsProvider,
+    KeysPipe
   ]
 })
 export class AppModule { }

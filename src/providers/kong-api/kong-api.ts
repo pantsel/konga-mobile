@@ -13,6 +13,7 @@ import 'rxjs/add/operator/map';
 export class KongApiProvider {
 
   url : string = 'kong/apis';
+  name : string = 'APIs';
 
   constructor(public http: Http, public api: Api) {
     console.log('Hello KongApiProvider Provider');
@@ -24,10 +25,24 @@ export class KongApiProvider {
   }
 
 
+  listPlugins(id : string) {
+    return  this.api.get(this.url + '/' + id + '/plugins');
+  }
+
+  addPlugin(id:string,data:any) {
+    return  this.api.post(this.url + '/' + id + '/plugins',data);
+  }
+
 
 
   delete(id : string) {
     return  this.api.delete(this.url + '/' + id);
   }
 
+
+  update(id,data) {
+
+    return this.api.put(this.url + '/' + id,data);
+
+  }
 }

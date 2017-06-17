@@ -6,6 +6,7 @@ import { Api }    from "../../providers/api";
 import * as _ from 'lodash';
 import moment from 'moment'
 import url from 'url';
+import {SearchPage} from "../search/search";
 
 /**
  * Generated class for the DefaultPage page.
@@ -20,7 +21,6 @@ import url from 'url';
 })
 export class DefaultListPage extends MainPage{
 
-  originalItems : any;
   next  : string;
   items : any;
   searchText : string = '';
@@ -28,8 +28,8 @@ export class DefaultListPage extends MainPage{
   provider : any = null;
   busy : boolean = false;
   refresher : any;
-  pages : any;
-  params : object = {}
+  pages : any = {};
+  params : any = {}
   moment : any = moment;
 
   constructor(public navCtrl: NavController,
@@ -99,7 +99,7 @@ export class DefaultListPage extends MainPage{
       console.log("DEFAULT PAGE : loadItems",response)
       let items = response.data || response;
       this.next = response.next;
-      this.originalItems = this.items = items;
+      this.items = items;
       if(this.refresher) this.refresher.complete();
       this.busy = false;
 
@@ -125,7 +125,7 @@ export class DefaultListPage extends MainPage{
 
           let items = response.data || response;
           this.next = response.next;
-          this.originalItems = this.items = this.originalItems.concat(items);
+          this.items = this.items.concat(items);
           if(this.refresher) this.refresher.complete();
           this.busy = false;
           infiniteScroll.complete();
@@ -134,25 +134,13 @@ export class DefaultListPage extends MainPage{
 
   }
 
-  filterItems(searchText,property? : string){
-    return this.originalItems.filter((item) => {
-      return item[property || 'name'].toLowerCase().indexOf(searchText.toLowerCase()) > -1;
-    });
-
-  }
-
-  setFilteredItems() {
-    this.items = this.filterItems(this.searchText);
-  }
-
-
   delete($event,item) {
 
     $event.stopPropagation();
 
     let alert = this.alertCtrl.create({
       title: 'Confirm deletion',
-      message: 'Do you want delete this connection?',
+      message: 'Do you want delete this item?',
       buttons: [
         {
           text: 'Cancel',
@@ -213,6 +201,20 @@ export class DefaultListPage extends MainPage{
       this.navCtrl.push(this.pages.show,{
         item : item
       })
+  }
+
+  onSearchItemSelected = (item) => {
+    return new Promise((resolve, reject) => {
+      this.showItem(item);
+      resolve();
+    });
+  }
+
+  searchItems() {
+    this.navCtrl.push(SearchPage,{
+      provider : this.provider,
+      callback: this.onSearchItemSelected
+    })
   }
 
 }

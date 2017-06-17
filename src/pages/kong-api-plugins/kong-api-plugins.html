@@ -1,0 +1,45 @@
+<!--
+  Generated template for the KongApiPluginsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+
+<ion-content>
+
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content
+                pullingIcon="arrow-dropdown"
+                pullingText="Pull to refresh"
+                refreshingSpinner="crescent"
+                refreshingText="Refreshing...">
+
+        </ion-refresher-content>
+
+    </ion-refresher>
+
+    <div *ngIf="busy" text-center margin padding>
+        <h4>Loading...</h4>
+        <br>
+        <br>
+        <ion-spinner></ion-spinner>
+    </div>
+
+
+    <ion-item-group  *ngFor="let group of groups">
+        <ion-item-divider color="light">{{group.name}}</ion-item-divider>
+        <button ion-item *ngFor="let plugin of group.plugins | keys" (click)="plugin.value.enabled ? onItemSelected(plugin) : null"
+                ngClass="{{plugin.value.enabled ? '' : 'opaque'}}"
+                color="{{plugin.value.enabled ? '' : 'light'}}">
+            <ion-icon name="{{plugin.value.added ? 'radio-button-on' : 'radio-button-off'}}"
+                      color="{{plugin.value.added ? 'success' : ''}}"
+                      item-start=""></ion-icon>
+            <h2>{{ plugin.key.split("-").join(" ").toUpperCase() }}</h2>
+            <p>{{plugin.value.description}}</p>
+        </button>
+    </ion-item-group>
+
+</ion-content>
+
+

@@ -97,7 +97,7 @@ $colors: (
 }
 
 .text-muted {
-  color : #bbb !important;
+  color : #888 !important;
 }
 
 ion-header {
@@ -108,4 +108,8 @@ p {
   ion-icon:before{
     vertical-align:middle;
   }
+}
+
+.opaque {
+  opacity: .4;
 }

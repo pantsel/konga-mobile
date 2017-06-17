@@ -1,0 +1,128 @@
+<!--
+  Generated template for the KongApiEditPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!--<ion-header>-->
+
+  <!--<ion-navbar color="dark">-->
+    <!--<ion-title>Edit API</ion-title>-->
+  <!--</ion-navbar>-->
+
+<!--</ion-header>-->
+
+
+<ion-content>
+
+  <form (submit)="update()" [formGroup]="form">
+    <ion-list>
+
+      <ion-item>
+        <ion-label floating>Name <span color="danger">*</span></ion-label>
+        <ion-input type="text" [(ngModel)]="item.name" formControlName="name"></ion-input>
+      </ion-item>
+
+      <ion-item class="item-clear" *ngIf="!form.controls.name.valid  && (form.controls.name.dirty || submitAttempt || formErrors.name)">
+        <p>{{formErrors.name || "The name is required."}}</p>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label floating>Hosts <span color="danger">semi-optional</span></ion-label>
+        <ion-input type="text" [(ngModel)]="item.hosts" formControlName="hosts"></ion-input>
+      </ion-item>
+
+      <ion-item class="item-clear" *ngIf="!form.controls.hosts.valid  && (form.controls.hosts.dirty || submitAttempt || formErrors.hosts)">
+        <p>{{formErrors.hosts}}</p>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label floating>Uris <span color="danger">semi-optional</span></ion-label>
+        <ion-input type="text" [(ngModel)]="item.uris" formControlName="uris"></ion-input>
+      </ion-item>
+
+      <ion-item class="item-clear" *ngIf="!form.controls.uris.valid  && (form.controls.uris.dirty || submitAttempt || formErrors.uris)">
+        <p>{{formErrors.uris}}</p>
+      </ion-item>
+
+
+
+      <ion-item>
+        <ion-label floating>Methods <span color="danger">semi-optional</span></ion-label>
+        <ion-input type="text" [(ngModel)]="item.methods" formControlName="methods"></ion-input>
+      </ion-item>
+
+      <ion-item class="item-clear" *ngIf="!form.controls.methods.valid  && (form.controls.methods.dirty || submitAttempt || formErrors.methods)">
+        <p>{{formErrors.methods}}</p>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label floating>Upstream Url <span color="danger">*</span></ion-label>
+        <ion-input type="text" [(ngModel)]="item.upstream_url" formControlName="upstream_url"></ion-input>
+      </ion-item>
+
+      <ion-item class="item-clear" *ngIf="!form.controls.upstream_url.valid  && (form.controls.upstream_url.dirty || submitAttempt || formErrors.upstream_url)">
+        <p>{{formErrors.upstream_url}}</p>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label>Strip Uri</ion-label>
+        <ion-toggle [(ngModel)] = "item.strip_uri" formControlName="strip_uri"></ion-toggle>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label>Preserve Host</ion-label>
+        <ion-toggle [(ngModel)] = "item.preserve_host" formControlName="preserve_host"></ion-toggle>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label floating>Retries <span color="danger">optional</span></ion-label>
+        <ion-input type="number" [(ngModel)]="item.retries" formControlName="retries"></ion-input>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label floating>Upstream Connect Timeout <span color="danger">optional</span></ion-label>
+        <ion-input type="number" [(ngModel)]="item.upstream_connect_timeout" formControlName="upstream_connect_timeout"></ion-input>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label floating>Upstream Send Timeout <span color="danger">optional</span></ion-label>
+        <ion-input type="number" [(ngModel)]="item.upstream_send_timeout" formControlName="upstream_send_timeout"></ion-input>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label floating>Upstream Read Timeout <span color="danger">optional</span></ion-label>
+        <ion-input type="number" [(ngModel)]="item.upstream_read_timeout" formControlName="upstream_read_timeout"></ion-input>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label>Https Only</ion-label>
+        <ion-toggle [(ngModel)] = "item.https_only" formControlName="https_only"></ion-toggle>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label>Http if terminated</ion-label>
+        <ion-toggle [(ngModel)] = "item.http_if_terminated" formControlName="http_if_terminated"></ion-toggle>
+      </ion-item>
+
+
+      <div padding>
+        <button ion-button color="primary" outline [disabled]="!form.valid" block>Update API</button>
+      </div>
+
+    </ion-list>
+  </form>
+
+
+</ion-content>

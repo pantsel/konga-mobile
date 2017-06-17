@@ -12,16 +12,16 @@
     </button>
     <ion-title>APIs</ion-title>
     <ion-buttons end>
-      <ion-spinner color="light" *ngIf="busy"></ion-spinner>
+      <button ion-button icon-only (click)="searchItems()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+      <button ion-button icon-only>
+        <ion-spinner color="light" *ngIf="busy"></ion-spinner>
+      </button>
+
     </ion-buttons>
   </ion-navbar>
-  <ion-searchbar
-          [(ngModel)]="searchText"
-          animated = true
-          placeholder = "Search APIs..."
-          showCancelButton="true"
-          (ionInput)="setFilteredItems()">
-  </ion-searchbar>
+
 </ion-header>
 
 
@@ -44,7 +44,7 @@
   </div>
 
   <ion-list>
-    <button  ion-item *ngFor="let item of items">
+    <button  ion-item *ngFor="let item of items" (click)="showItem(item)">
       <h2>{{item.name}}</h2>
       <h3>{{item.upstream_url}}</h3>
       <p>{{moment(item.created_at).format("dddd, MMMM Do YYYY, HH:mm")}}</p>
