@@ -52,4 +52,10 @@ export class KongApiProvider {
     return this.api.put(this.url + '/' + id,data);
 
   }
+
+  create(data) {
+
+    return this.api.post(this.url,data);
+
+  }
 }

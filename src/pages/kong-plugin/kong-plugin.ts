@@ -19,6 +19,7 @@ import * as _ from 'lodash';
 export class KongPluginPage {
 
     pluginName: string;
+    pluginCustomData : any;
     action: string;
     api: any;
     schema: any;
@@ -36,6 +37,7 @@ export class KongPluginPage {
                 public navParams: NavParams) {
 
         this.pluginName = navParams.get("pluginName");
+        this.pluginCustomData = navParams.get("pluginCustomData");
         this.action = navParams.get("action");
         this.api = navParams.get("api");
 
@@ -54,19 +56,10 @@ export class KongPluginPage {
     ionViewDidEnter() {
         this.kongPluginsProvider.retrieveSchema(this.pluginName)
             .then((res: any) => {
-                console.log("RETRIEVE PLUGIN SCHEMA => ", res);
-
-                let schema = res;
-
-                // Assign default values
-                Object.keys(schema.fields).forEach(key => {
-                    if (schema.fields[key].default !== undefined) {
-                        schema.fields[key].value = schema.fields[key].default
-                    }
-
-                })
-
                 this.schema = res;
+
+                console.log("RETRIEVE PLUGIN SCHEMA => ", this.schema);
+
 
                 if(!this.data.api_id) this.initDataConfig(this.schema);
 
@@ -79,8 +72,6 @@ export class KongPluginPage {
     initData() {
 
         var existingPluginData = this.getPluginFromApi();
-
-
 
         this.data = existingPluginData || {
             name : this.pluginName,
@@ -103,21 +94,29 @@ export class KongPluginPage {
     }
 
 
-    initDataConfig(schema,path?:any) {
-
+    initDataConfig(schema, path?:any, defaultValue?:any) {
 
         if(this.data.api_id) return;
-
 
         Object.keys(schema.fields).forEach(key => {
 
             if(schema.fields[key].schema) {
                 let _path = key;
-                this.initDataConfig(schema.fields[key].schema,_path)
+                var _defaultValue;
+
+                if(schema.fields[key].type === 'table' || schema.fields[key].type === 'flexible') {
+                    _defaultValue = {}
+                }else{
+                    _defaultValue = schema.fields[key].default
+                }
+
+                this.initDataConfig(schema.fields[key].schema,_path,_defaultValue)
             }else{
-                if(schema.fields[key] && schema.fields[key] !== "function" && schema.fields[key].default !== "function") {
-                    // this.data.config[key] = null;
-                    _.set(this.data,'config.' + ( path || key ),schema.fields[key].default)
+                if(schema.fields[key] && schema.fields[key] !== "function"
+                    && schema.fields[key].default !== "function"
+                ) {
+
+                    _.set(this.data,'config.' + ( path || key ),defaultValue || schema.fields[key].default)
                 }
             }
 
@@ -129,9 +128,7 @@ export class KongPluginPage {
     save() {
         console.log("SAVE CLICKED : Fields =>",this.schema.fields)
 
-
         let data = this.data;
-
 
         console.log("SAVE CLICKED : DATA =>",data)
 
@@ -141,6 +138,7 @@ export class KongPluginPage {
 
         }
     }
+
 
     addPlugin(data) {
         this.kongApiProvider.addPlugin(this.api.id,data)
@@ -155,6 +153,7 @@ export class KongPluginPage {
             })
     }
 
+
     updatePlugin(data) {
         this.kongApiProvider.updatePlugin(this.api.id,data)
             .then((res:any)=>{
@@ -168,15 +167,23 @@ export class KongPluginPage {
             })
     }
 
+
     setConfigValue(newValue,path) {
         _.set(this.data,path,newValue)
     }
+
 
     handleError(err) {
         if(err.message) {
             this.showToast(err.message)
         }else{
-            this.showToast(err.body[Object.keys(err.body)[0]])
+
+            let errors = [];
+            Object.keys(err.body).forEach(key => {
+                errors.push(err.body[key])
+            })
+
+            this.showToast(errors.join("\x0A"))
         }
     }
 
@@ -185,7 +192,8 @@ export class KongPluginPage {
         let toast = this.toastCtrl.create({
             message: message,
             duration: 3000,
-            position: 'top'
+            position: 'top',
+            cssClass: "pre-line",
         });
         toast.present();
     }

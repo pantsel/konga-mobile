@@ -19,7 +19,7 @@
 
     </ion-refresher>
 
-    <div *ngIf="busy" text-center margin padding>
+    <div *ngIf="!groups && busy" text-center margin padding>
         <h4>Loading...</h4>
         <br>
         <br>
@@ -28,7 +28,7 @@
 
 
     <ion-item-group  *ngFor="let group of groups">
-        <ion-item-divider color="light">{{group.name}}</ion-item-divider>
+        <ion-item-divider color="light">{{group.name.toUpperCase()}}</ion-item-divider>
         <button ion-item *ngFor="let plugin of group.plugins | keys" (click)="plugin.value.enabled ? onItemSelected(plugin) : null"
                 ngClass="{{plugin.value.enabled ? '' : 'opaque'}}"
                 color="{{plugin.value.enabled ? '' : 'light'}}">

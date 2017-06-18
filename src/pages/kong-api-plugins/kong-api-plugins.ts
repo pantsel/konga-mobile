@@ -51,17 +51,19 @@ export class KongApiPluginsPage {
 
   loadItems() {
 
-    this.kongPluginsProvider.listEnabled()
-        .then((res : any) => {
-          console.log("LOAD PLUGINS => ", res);
-          this.plugins = res.enabled_plugins;
+    this.kongPluginsProvider.list()
+        .then((res:any) => {
+          let initialGroups = res;
+
+          console.log("LIST PLUGINS INITIAL GROUPS", initialGroups);
+
 
           // Load api plugins
           if(this.api) {
             this.kongApiProvider.listPlugins(this.api.id)
                 .then((res : any) => {
                   this.api.plugins = res.data
-                  this.makeGroups(this.plugins);
+                  this.addGroupsData(initialGroups);
                   this.busy = false;
                   if(this.refresher) this.refresher.complete();
                 }, err => {
@@ -70,8 +72,11 @@ export class KongApiPluginsPage {
                   this.busy = false;
                   if(this.refresher) this.refresher.complete();
                 })
+          }else{
+            this.addGroupsData(initialGroups);
+            this.busy = false;
+            if(this.refresher) this.refresher.complete();
           }
-
 
         }, err => {
           console.log("FAILED TO LOAD PLUGINS => ", err)
@@ -82,42 +87,25 @@ export class KongApiPluginsPage {
   }
 
 
-  makeGroups(_enabledPlugins) {
+  addGroupsData(initialGroups) {
 
-    let _groups = this.kongPluginsProvider.groups();
-    let enabledPlugins = _.clone(_enabledPlugins);
-
-    _groups.forEach(group => {
+    initialGroups.forEach(group => {
       for(let key of Object.keys(group.plugins)) {
 
-        var index = enabledPlugins.indexOf(key);
-        if(index > -1) {
-          group.plugins[key].enabled = true; // Mark plugin as enabled so it will be shown in the list
-          enabledPlugins.splice(index, 1); // Remove found plugin from array
+        // Check if plugin is added to api
+        let apiPlugin = this.getApiPlugin(key);
+        if (apiPlugin) {
+          group.plugins[key].added = true;
+          group.plugins[key] = _.merge(group.plugins[key], {
+            apiPlugin: apiPlugin
+          });
 
-          // Check if plugin is added to api
-          let apiPlugin = this.getApiPlugin(key);
-          if(apiPlugin) {
-            group.plugins[key].added = true;
-            group.plugins[key] = _.merge(group.plugins[key],{
-              apiPlugin : apiPlugin
-            });
-          }else{
-            group.plugins[key].added = false;
-          }
         }
       }
     })
 
-    // If there are any enabledPlugins left,
-    // add them to the custom plugins group
-    if(enabledPlugins.length) {
-      enabledPlugins.forEach(plugin => {
-        _groups[_groups.length - 1].plugins[plugin] = {}
-      })
-    }
+    this.groups = initialGroups
 
-    this.groups = _groups;
 
   }
 
@@ -142,7 +130,8 @@ export class KongApiPluginsPage {
     let modal = this.modalCtrl.create(KongPluginPage,{
       api : this.api,
       action : this.getApiPlugin(item.key) ? 'update' : 'create',
-      pluginName : item.key
+      pluginName : item.key,
+      pluginCustomData : item.value.customData
     })
 
     modal.onDidDismiss(data => {

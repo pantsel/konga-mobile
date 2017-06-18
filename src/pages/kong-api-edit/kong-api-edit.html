@@ -4,22 +4,22 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<!--<ion-header>-->
+<ion-header *ngIf="!item.id">
 
-  <!--<ion-navbar color="dark">-->
-    <!--<ion-title>Edit API</ion-title>-->
-  <!--</ion-navbar>-->
+  <ion-navbar color="dark">
+    <ion-title>Create API</ion-title>
+  </ion-navbar>
 
-<!--</ion-header>-->
+</ion-header>
 
 
 <ion-content>
 
-  <form (submit)="update()" [formGroup]="form">
+  <form (submit)="save()" [formGroup]="form">
     <ion-list>
 
       <ion-item>
-        <ion-label floating>Name <span color="danger">*</span></ion-label>
+        <ion-label stacked>Name <span color="danger">*</span></ion-label>
         <ion-input type="text" [(ngModel)]="item.name" formControlName="name"></ion-input>
       </ion-item>
 
@@ -29,7 +29,7 @@
 
 
       <ion-item>
-        <ion-label floating>Hosts <span color="danger">semi-optional</span></ion-label>
+        <ion-label stacked>Hosts <span color="danger">(semi-optional)</span></ion-label>
         <ion-input type="text" [(ngModel)]="item.hosts" formControlName="hosts"></ion-input>
       </ion-item>
 
@@ -39,7 +39,7 @@
 
 
       <ion-item>
-        <ion-label floating>Uris <span color="danger">semi-optional</span></ion-label>
+        <ion-label stacked>Uris <span color="danger">(semi-optional)</span></ion-label>
         <ion-input type="text" [(ngModel)]="item.uris" formControlName="uris"></ion-input>
       </ion-item>
 
@@ -50,7 +50,7 @@
 
 
       <ion-item>
-        <ion-label floating>Methods <span color="danger">semi-optional</span></ion-label>
+        <ion-label stacked>Methods <span color="danger">(semi-optional)</span></ion-label>
         <ion-input type="text" [(ngModel)]="item.methods" formControlName="methods"></ion-input>
       </ion-item>
 
@@ -60,7 +60,7 @@
 
 
       <ion-item>
-        <ion-label floating>Upstream Url <span color="danger">*</span></ion-label>
+        <ion-label stacked>Upstream Url <span color="danger">*</span></ion-label>
         <ion-input type="text" [(ngModel)]="item.upstream_url" formControlName="upstream_url"></ion-input>
       </ion-item>
 
@@ -82,25 +82,25 @@
 
 
       <ion-item>
-        <ion-label floating>Retries <span color="danger">optional</span></ion-label>
+        <ion-label stacked>Retries <span color="danger">(optional)</span></ion-label>
         <ion-input type="number" [(ngModel)]="item.retries" formControlName="retries"></ion-input>
       </ion-item>
 
 
       <ion-item>
-        <ion-label floating>Upstream Connect Timeout <span color="danger">optional</span></ion-label>
+        <ion-label stacked>Upstream Connect Timeout <span color="danger">(optional)</span></ion-label>
         <ion-input type="number" [(ngModel)]="item.upstream_connect_timeout" formControlName="upstream_connect_timeout"></ion-input>
       </ion-item>
 
 
       <ion-item>
-        <ion-label floating>Upstream Send Timeout <span color="danger">optional</span></ion-label>
+        <ion-label stacked>Upstream Send Timeout <span color="danger">(optional)</span></ion-label>
         <ion-input type="number" [(ngModel)]="item.upstream_send_timeout" formControlName="upstream_send_timeout"></ion-input>
       </ion-item>
 
 
       <ion-item>
-        <ion-label floating>Upstream Read Timeout <span color="danger">optional</span></ion-label>
+        <ion-label stacked>Upstream Read Timeout <span color="danger">(optional)</span></ion-label>
         <ion-input type="number" [(ngModel)]="item.upstream_read_timeout" formControlName="upstream_read_timeout"></ion-input>
       </ion-item>
 
@@ -118,7 +118,9 @@
 
 
       <div padding>
-        <button ion-button color="primary" outline [disabled]="!form.valid" block>Update API</button>
+        <button ion-button color="primary" outline [disabled]="!form.valid" block>
+          {{item.id ? "Update" : "Create" }} API
+        </button>
       </div>
 
     </ion-list>

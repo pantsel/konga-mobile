@@ -30,7 +30,7 @@ export class KongApiEditPage {
               fb : FormBuilder) {
 
 
-    this.item = navParams.get("item");
+    this.item = navParams.get("item") || {};
 
     this.form = fb.group({
       name: ['', Validators.compose([ Validators.required])],
@@ -55,9 +55,14 @@ export class KongApiEditPage {
   }
 
 
-  update() {
+  save() {
     this.submitAttempt = true;
+    this.item.id ? this.updateApi() : this.createApi();
 
+  }
+
+
+  updateApi() {
     this.provider.update(this.item.id,this.item)
         .then(updated => {
 
@@ -65,6 +70,31 @@ export class KongApiEditPage {
         }, err => {
           console.log("FAILED TO UPDATE API => ",err)
         })
+  }
+
+  createApi() {
+    this.provider.create(this.item)
+        .then(created => {
+          this.showToast("API created successfully!")
+          this.navCtrl.pop();
+        }, err => {
+          console.log("FAILED TO CREATE API => ",err.json())
+          this.handleError(err.json());
+        })
+  }
+
+  handleError(err) {
+    if(err.message) {
+      this.showToast(err.message)
+    }else{
+
+      let errors = [];
+      Object.keys(err.body).forEach(key => {
+        errors.push(err.body[key])
+      })
+
+      this.showToast(errors.join("\x0A"))
+    }
   }
 
   showToast(message) {

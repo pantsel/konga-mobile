@@ -113,3 +113,19 @@ p {
 .opaque {
   opacity: .4;
 }
+
+.pre-line{
+  white-space: pre-line;
+}
+
+.bg-light{
+  background-color: color($colors, light, base) !important;
+}
+
+code{
+  color : color($colors, danger, base) !important;
+}
+
+.text-sm{
+  font-size: 0.9em;
+}

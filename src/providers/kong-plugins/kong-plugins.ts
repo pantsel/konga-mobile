@@ -20,6 +20,11 @@ export class KongPluginsProvider {
   }
 
 
+  list() {
+    return this.api.get("api/kong_plugins/list");
+  }
+
+
   listEnabled() {
     return this.api.get(this.url + "/enabled");
   }

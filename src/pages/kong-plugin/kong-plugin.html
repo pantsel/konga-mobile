@@ -9,11 +9,11 @@
   <ion-navbar>
     <ion-title>{{pluginName.split("-").join(" ").toUpperCase()}}</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="save()" color="success">
-        <ion-icon name="checkmark"></ion-icon>
+      <button ion-button (click)="save()" color="success">
+        {{data.api_id ? "Update" : "Add Plugin"}}
       </button>
-      <button ion-button icon-only (click)="closeModal()">
-        <ion-icon name="close"></ion-icon>
+      <button ion-button  (click)="closeModal()">
+        Close
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -23,11 +23,19 @@
 
 <ion-content>
 
+  <div padding *ngIf="pluginCustomData" class="bg-light text-muted text-sm" [innerHTML]="pluginCustomData.meta.description">
+  </div>
+
   <form *ngIf="schema">
 
     <ion-item *ngIf="data.enabled !== undefined">
       <ion-label>Enabled</ion-label>
       <ion-toggle [(ngModel)]="data.enabled" name="enabled"></ion-toggle>
+    </ion-item>
+
+    <ion-item *ngIf="!schema.no_consumer">
+      <ion-label stacked>Consumer id</ion-label>
+      <ion-input [(ngModel)]="data.consumer_id" name="consumer_id"></ion-input>
     </ion-item>
 
     <div *ngFor="let item of schema.fields | keys" [ngSwitch]="item.value.type">
@@ -101,5 +109,6 @@
     </div>
 
   </form>
+  <div padding></div>
 
 </ion-content>
