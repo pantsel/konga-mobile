@@ -33,7 +33,14 @@ export class KongApiProvider {
     return  this.api.post(this.url + '/' + id + '/plugins',data);
   }
 
+  updatePlugin(id:string,data:any) {
+    return  this.api.patch(this.url + '/' + id + '/plugins/' + data.id,data);
+  }
 
+
+  removePlugin(apiId,pluginId) {
+    return  this.api.delete(this.url + '/' + apiId + '/plugins/' + pluginId);
+  }
 
   delete(id : string) {
     return  this.api.delete(this.url + '/' + id);

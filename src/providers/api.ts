@@ -188,6 +188,20 @@ export class Api {
     }
 
     patch(endpoint: string, body: any, options?: RequestOptions) {
-        return this.http.put(this.url + '/' + endpoint, body, options);
+
+        return this.makeRequestOptions()
+            .then(defaultOptions => {
+                return new Promise((resolve, reject) => {
+                    let seq = this.http.put(this.url + '/' + endpoint, body, defaultOptions).share();
+
+                    seq
+                        .map(res => res.json())
+                        .subscribe(res => {
+                            resolve(res)
+                        }, err => {
+                            reject(err)
+                        });
+                });
+            })
     }
 }

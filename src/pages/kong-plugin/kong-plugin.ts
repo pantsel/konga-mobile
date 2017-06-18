@@ -3,6 +3,7 @@ import {IonicPage, NavController, NavParams, ViewController, AlertController, Ev
 import {KongApiProvider} from '../../providers/kong-api/kong-api';
 import {KongPluginsProvider} from '../../providers/kong-plugins/kong-plugins';
 import {KeysPipe} from '../../pipes/keys/keys';
+import * as _ from 'lodash';
 
 /**
  * Generated class for the KongPluginPage page.
@@ -22,6 +23,7 @@ export class KongPluginPage {
     api: any;
     schema: any;
     data : any;
+    _ : any = _;
 
     constructor(public navCtrl: NavController,
                 public kongApiProvider: KongApiProvider,
@@ -36,10 +38,10 @@ export class KongPluginPage {
         this.pluginName = navParams.get("pluginName");
         this.action = navParams.get("action");
         this.api = navParams.get("api");
-        this.data = {
-            name : this.pluginName,
-            config : {}
-        }
+
+        this.initData();
+
+
 
     }
 
@@ -65,39 +67,109 @@ export class KongPluginPage {
                 })
 
                 this.schema = res;
+
+                if(!this.data.api_id) this.initDataConfig(this.schema);
+
             }, err => {
                 console.log("FAILED TO RETRIEVE PLUGIN SCHEMA => ", err);
             })
     }
 
 
+    initData() {
+
+        var existingPluginData = this.getPluginFromApi();
+
+
+
+        this.data = existingPluginData || {
+            name : this.pluginName,
+            config : {}
+        }
+
+        console.log("INIT DATA => ", this.data)
+    }
+
+    getPluginFromApi() {
+        if(!this.api.plugins) return null;
+        for(let i=0; i<this.api.plugins.length; i++) {
+            let plugin = this.api.plugins[i];
+            if(plugin.name === this.pluginName) {
+                return plugin;
+            }
+        }
+
+        return null;
+    }
+
+
+    initDataConfig(schema,path?:any) {
+
+
+        if(this.data.api_id) return;
+
+
+        Object.keys(schema.fields).forEach(key => {
+
+            if(schema.fields[key].schema) {
+                let _path = key;
+                this.initDataConfig(schema.fields[key].schema,_path)
+            }else{
+                if(schema.fields[key] && schema.fields[key] !== "function" && schema.fields[key].default !== "function") {
+                    // this.data.config[key] = null;
+                    _.set(this.data,'config.' + ( path || key ),schema.fields[key].default)
+                }
+            }
+
+
+        })
+    }
+
+
     save() {
-        console.log("SAVE CLICKED =>",this.schema.fields)
+        console.log("SAVE CLICKED : Fields =>",this.schema.fields)
+
 
         let data = this.data;
 
-        Object.keys(this.schema.fields).forEach(key => {
-            if(this.schema.fields[key] && this.schema.fields[key] !== "function") {
-                data.config[key] = this.schema.fields[key].value
-            }
-        })
 
         console.log("SAVE CLICKED : DATA =>",data)
 
         if(this.api) {
 
-            this.kongApiProvider.addPlugin(this.api.id,data)
-                .then((res:any)=>{
+            this.data.api_id ? this.updatePlugin(data) : this.addPlugin(data)
 
-                    let data = { 'update': true };
-
-                    this.closeModal(data)
-
-                }, err => {
-                    console.error("FAILED TO ADD PLUGIN",err.json())
-                    this.handleError(err.json())
-                })
         }
+    }
+
+    addPlugin(data) {
+        this.kongApiProvider.addPlugin(this.api.id,data)
+            .then((res:any)=>{
+
+                this.showToast("Plugin added successfully!");
+                this.closeModal({ 'update': true });
+
+            }, err => {
+                console.error("FAILED TO ADD PLUGIN",err.json())
+                this.handleError(err.json())
+            })
+    }
+
+    updatePlugin(data) {
+        this.kongApiProvider.updatePlugin(this.api.id,data)
+            .then((res:any)=>{
+
+                this.showToast("Plugin updated successfully!");
+                this.closeModal({ 'update': true });
+
+            }, err => {
+                console.error("FAILED TO UPDATE PLUGIN",err.json())
+                this.handleError(err.json())
+            })
+    }
+
+    setConfigValue(newValue,path) {
+        _.set(this.data,path,newValue)
     }
 
     handleError(err) {

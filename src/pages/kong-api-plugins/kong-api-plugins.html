@@ -33,10 +33,16 @@
                 ngClass="{{plugin.value.enabled ? '' : 'opaque'}}"
                 color="{{plugin.value.enabled ? '' : 'light'}}">
             <ion-icon name="{{plugin.value.added ? 'radio-button-on' : 'radio-button-off'}}"
-                      color="{{plugin.value.added ? 'success' : ''}}"
+                      color="{{plugin.value.added ? plugin.value.apiPlugin.enabled ? 'success' : 'gray' : ''}}"
                       item-start=""></ion-icon>
             <h2>{{ plugin.key.split("-").join(" ").toUpperCase() }}</h2>
             <p>{{plugin.value.description}}</p>
+            <ion-icon
+                    *ngIf="plugin.value.apiPlugin"
+                    item-end
+                    color="danger"
+                    (click)="removePlugin($event,plugin.value.apiPlugin)"
+                    name="trash"></ion-icon>
         </button>
     </ion-item-group>
 

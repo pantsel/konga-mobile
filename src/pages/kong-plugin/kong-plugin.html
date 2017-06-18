@@ -35,34 +35,39 @@
         <ion-label stacked>{{item.key.split("_").join(" ")}} <span *ngIf="item.value.required">*</span></ion-label>
 
         <!-- CASE ENUM -->
-        <ion-select *ngIf="item.value.enum && item.value.enum.length" [(ngModel)]="item.value.value" name="{{item.key}}">
+        <ion-select *ngIf="item.value.enum && item.value.enum.length" [(ngModel)]="data.config[item.key]" name="{{item.key}}">
           <ion-option *ngFor="let option of item.value.enum">{{option}}</ion-option>
         </ion-select>
 
         <!-- CASE NOT ENUM -->
-        <ion-input *ngIf="!item.value.enum" type="text" [(ngModel)]="item.value.value" name="{{item.key}}" [required]="item.value.required"></ion-input>
+        <ion-input *ngIf="!item.value.enum" type="text" [(ngModel)]="data.config[item.key]" name="{{item.key}}" [required]="item.value.required"></ion-input>
       </ion-item>
 
       <ion-item *ngSwitchCase="'number'">
         <ion-label stacked>{{item.key.split("_").join(" ")}} <span *ngIf="item.value.required">*</span></ion-label>
-        <ion-input type="number" [(ngModel)]="item.value.value" name="{{item.key}}" [required]="item.value.required"></ion-input>
+        <ion-input type="number" [(ngModel)]="data.config[item.key]" name="{{item.key}}" [required]="item.value.required"></ion-input>
+      </ion-item>
+
+      <ion-item *ngSwitchCase="'url'">
+        <ion-label stacked>{{item.key.split("_").join(" ")}} <span *ngIf="item.value.required">*</span></ion-label>
+        <ion-input type="url" [(ngModel)]="data.config[item.key]" name="{{item.key}}" [required]="item.value.required"></ion-input>
       </ion-item>
 
       <ion-item *ngSwitchCase="'boolean'">
         <ion-label>{{item.key.split("_").join(" ")}} <span *ngIf="item.value.required">*</span></ion-label>
-        <ion-toggle [(ngModel)]="item.value.value" name="{{item.key}}"></ion-toggle>
+        <ion-toggle [(ngModel)]="data.config[item.key]" name="{{item.key}}"></ion-toggle>
       </ion-item>
 
       <ion-item *ngSwitchCase="'array'">
         <ion-label stacked>{{item.key.split("_").join(" ")}} <span *ngIf="item.value.required">*</span></ion-label>
         
         <!-- CASE ENUM -->
-        <ion-select *ngIf="item.value.enum && item.value.enum.length" [(ngModel)]="item.value.value" multiple="true" name="{{item.key}}">
+        <ion-select *ngIf="item.value.enum && item.value.enum.length" [(ngModel)]="data.config[item.key]" multiple="true" name="{{item.key}}">
           <ion-option *ngFor="let option of item.value.enum">{{option}}</ion-option>
         </ion-select>
 
         <!-- CASE NOT ENUM -->
-        <ion-input *ngIf="!item.value.enum" type="text" [(ngModel)]="item.value.value" name="{{item.key}}" [required]="item.value.required"></ion-input>
+        <ion-input *ngIf="!item.value.enum" type="text" [(ngModel)]="data.config[item.key]" name="{{item.key}}" [required]="item.value.required"></ion-input>
       </ion-item>
 
       <ion-item-group *ngSwitchCase="'table'">
@@ -73,11 +78,24 @@
         <ion-item-group *ngFor="let _item of item.value.schema.fields | keys">
           <ion-item>
             <ion-label stacked>{{_item.key}}</ion-label>
-            <ion-input type="text" [(ngModel)]="_item.value.value" name="{{_item.key}}" placeholder="ex. k1:v1,k2:v2"></ion-input>
+            <ion-input type="text" [(ngModel)]="data.config[item.key][_item.key]"
+                       name="{{_item.key}}" placeholder="ex. k1:v1,k2:v2"></ion-input>
           </ion-item>
         </ion-item-group>
         <ion-item></ion-item>
       </ion-item-group>
+
+      <ion-item *ngSwitchDefault>
+        <ion-label stacked>{{item.key.split("_").join(" ")}} <span *ngIf="item.value.required">*</span></ion-label>
+
+        <!-- CASE ENUM -->
+        <ion-select *ngIf="item.value.enum && item.value.enum.length" [(ngModel)]="data.config[item.key]" name="{{item.key}}">
+          <ion-option *ngFor="let option of item.value.enum">{{option}}</ion-option>
+        </ion-select>
+
+        <!-- CASE NOT ENUM -->
+        <ion-input *ngIf="!item.value.enum" type="text" [(ngModel)]="data.config[item.key]" name="{{item.key}}" [required]="item.value.required"></ion-input>
+      </ion-item>
 
 
     </div>

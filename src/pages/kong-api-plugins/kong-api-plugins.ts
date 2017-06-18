@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, ModalController, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, ModalController, Events, AlertController  } from 'ionic-angular';
 import { KongPluginsProvider } from '../../providers/kong-plugins/kong-plugins';
 import { KeysPipe } from '../../pipes/keys/keys';
 import { KongApiProvider } from '../../providers/kong-api/kong-api';
@@ -32,7 +32,8 @@ export class KongApiPluginsPage {
               public keys : KeysPipe,
               public events : Events,
               public kongPluginsProvider : KongPluginsProvider,
-              public KongApiProvider : KongApiProvider) {
+              public alertCtrl: AlertController,
+              public kongApiProvider : KongApiProvider) {
 
     this.api = navParams.get("item");
   }
@@ -57,7 +58,7 @@ export class KongApiPluginsPage {
 
           // Load api plugins
           if(this.api) {
-            this.KongApiProvider.listPlugins(this.api.id)
+            this.kongApiProvider.listPlugins(this.api.id)
                 .then((res : any) => {
                   this.api.plugins = res.data
                   this.makeGroups(this.plugins);
@@ -95,8 +96,12 @@ export class KongApiPluginsPage {
           enabledPlugins.splice(index, 1); // Remove found plugin from array
 
           // Check if plugin is added to api
-          if(this.isPluginAdded(key)) {
+          let apiPlugin = this.getApiPlugin(key);
+          if(apiPlugin) {
             group.plugins[key].added = true;
+            group.plugins[key] = _.merge(group.plugins[key],{
+              apiPlugin : apiPlugin
+            });
           }else{
             group.plugins[key].added = false;
           }
@@ -116,19 +121,18 @@ export class KongApiPluginsPage {
 
   }
 
-  isPluginAdded(pluginName) : boolean {
+  getApiPlugin(pluginName) {
+    if(!this.api || !this.api.plugins) return null;
 
-    if(!this.api || !this.api.plugins) return false;
-
-    let found = false;
-
-    this.api.plugins.forEach(plugin => {
+    for(let i=0; i<this.api.plugins.length;i++) {
+      let plugin = this.api.plugins[i];
       if(plugin.name === pluginName) {
-        found = true;
+        return plugin;
       }
-    })
+    }
 
-    return found;
+
+    return null;
 
   }
 
@@ -137,7 +141,7 @@ export class KongApiPluginsPage {
 
     let modal = this.modalCtrl.create(KongPluginPage,{
       api : this.api,
-      action : this.isPluginAdded(item.key) ? 'update' : 'create',
+      action : this.getApiPlugin(item.key) ? 'update' : 'create',
       pluginName : item.key
     })
 
@@ -149,6 +153,44 @@ export class KongApiPluginsPage {
     });
 
     modal.present();
+
+  }
+
+  removePlugin($event,plugin) {
+    $event.stopPropagation();
+
+
+    let confirm = this.alertCtrl.create({
+      title: 'Confirm Action',
+      message: 'Really want to remove the selected plugin?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log('Agree clicked');
+            this.kongApiProvider.removePlugin(this.api.id,plugin.id)
+                .then(res =>{
+                  this.showToast("Plugin removed successfully!")
+                  this.loadItems();
+                }, err => {
+                  console.log("FAILED TO REMOVE PLUGIN",err)
+                  this.showToast("Failed to remove plugin")
+                })
+          }
+        }
+      ]
+    });
+    confirm.present();
+
+
+    
+
 
   }
 
