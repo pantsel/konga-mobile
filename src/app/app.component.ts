@@ -33,6 +33,7 @@ import { Events, ModalController } from 'ionic-angular';
 
 import { SocketProvider } from '../providers/socket';
 import {KongApisPage} from "../pages/kong-apis/kong-apis";
+import { ConsumersListPage } from "../pages/consumers-list/consumers-list";
 
 
 
@@ -70,6 +71,7 @@ export class MyApp {
   pages: any[] = [
     // { title: 'Login', component: LoginPage },
     { title: 'Dashboard', component: DashboardPage, icon : "speedometer" },
+    { title: 'Consumers', component: ConsumersListPage, icon : "people" },
     { title: 'APIs', component: KongApisPage, icon : "cloud-circle" },
     { title: 'Connections', component: ConnectionsPage, icon : "git-network" },
 

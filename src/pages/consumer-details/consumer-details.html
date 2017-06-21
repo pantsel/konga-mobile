@@ -1,0 +1,53 @@
+<!--
+  Generated template for the ConsumerDetailsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header *ngIf="!item.id">
+
+  <ion-navbar color="dark">
+    <ion-title>Create Consumer</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <form (submit)="save()" [formGroup]="form">
+    <ion-list>
+
+      <ion-item>
+        <ion-label stacked>Username <span color="danger">*</span></ion-label>
+        <ion-input type="text" [(ngModel)]="item.username" formControlName="username"></ion-input>
+      </ion-item>
+
+      <ion-item class="item-clear" *ngIf="!form.controls.username.valid  && (form.controls.username.dirty || submitAttempt || formErrors.username)">
+        <p>{{formErrors.name || "The username is required."}}</p>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label stacked>Custom id <span color="danger">*</span></ion-label>
+        <ion-input type="text" [(ngModel)]="item.custom_id" formControlName="custom_id"></ion-input>
+      </ion-item>
+
+      <ion-item class="item-clear" *ngIf="!form.controls.custom_id.valid  && (form.controls.custom_id.dirty || submitAttempt || formErrors.custom_id)">
+        <p>{{formErrors.name || "The custom id is required."}}</p>
+      </ion-item>
+
+
+
+      <div padding>
+        <button ion-button color="primary" outline [disabled]="!form.valid" block>
+          {{item.id ? "Update" : "Create" }} {{provider.name}}
+        </button>
+      </div>
+
+    </ion-list>
+  </form>
+
+
+</ion-content>
+

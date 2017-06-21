@@ -54,6 +54,12 @@ import {KongApiPluginsPage} from "../pages/kong-api-plugins/kong-api-plugins";
 import { KongPluginsProvider } from '../providers/kong-plugins/kong-plugins';
 import { KeysPipe } from '../pipes/keys/keys';
 import {KongPluginPage} from "../pages/kong-plugin/kong-plugin";
+import {ConsumersListPage} from "../pages/consumers-list/consumers-list";
+import { ConsumerProvider } from '../providers/consumer/consumer';
+import {ConsumerDetailsPage} from "../pages/consumer-details/consumer-details";
+import {ConsumerPage} from "../pages/consumer/consumer";
+import {ConsumerGroupsPage} from "../pages/consumer-groups/consumer-groups";
+import {ConsumerCredentialsPage} from "../pages/consumer-credentials/consumer-credentials";
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -107,7 +113,12 @@ export function provideSettings(storage: Storage) {
     KongApiHealthChecksPage,
     KongApiPluginsPage,
     KeysPipe,
-    KongPluginPage
+    KongPluginPage,
+    ConsumersListPage,
+    ConsumerDetailsPage,
+    ConsumerPage,
+    ConsumerGroupsPage,
+    ConsumerCredentialsPage
   ],
   imports: [
     BrowserModule,
@@ -153,7 +164,12 @@ export function provideSettings(storage: Storage) {
     KongApiEditPage,
     KongApiHealthChecksPage,
     KongApiPluginsPage,
-    KongPluginPage
+    KongPluginPage,
+    ConsumersListPage,
+    ConsumerDetailsPage,
+    ConsumerPage,
+    ConsumerGroupsPage,
+    ConsumerCredentialsPage
   ],
   providers: [
     Api,
@@ -170,7 +186,9 @@ export function provideSettings(storage: Storage) {
     SocketProvider,
     KongApiProvider,
     KongPluginsProvider,
-    KeysPipe
+    ConsumerProvider,
+    KeysPipe,
+    ConsumerProvider
   ]
 })
 export class AppModule { }

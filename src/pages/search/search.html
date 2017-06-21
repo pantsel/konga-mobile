@@ -24,8 +24,8 @@
 
   <ion-list>
     <button  ion-item *ngFor="let item of filteredItems" (click)="onSelectItem(item)">
-      <h2>{{item.name}}</h2>
-      <h3>{{item.upstream_url}}</h3>
+      <h2 *ngIf="provider.listFields[0]">{{item[provider.listFields[0]]}}</h2>
+      <h3 *ngIf="provider.listFields[1]">{{item[provider.listFields[1]]}}</h3>
       <p>{{moment(item.created_at).format("dddd, MMMM Do YYYY, HH:mm")}}</p>
     </button>
   </ion-list>

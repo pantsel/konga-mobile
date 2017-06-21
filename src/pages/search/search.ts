@@ -64,19 +64,26 @@ export class SearchPage {
   }
 
 
-  filterItems(searchText,property? : string){
+  filterItems(searchText){
     return this.items.filter((item) => {
-      return item[property || 'name'].toLowerCase().indexOf(searchText.toLowerCase()) > -1;
+
+      let conditions = this.provider.searchFields.filter(sf => {
+        return item[sf] && item[sf].toLowerCase().indexOf(searchText.toLowerCase()) > -1;
+      })
+
+      return conditions.length > 0;
+
+
     });
 
   }
 
 
-  setFilteredItems(property? : string) {
+  setFilteredItems() {
     if(!this.searchText) {
       this.filteredItems = []
     }else{
-      this.filteredItems = this.filterItems(this.searchText,property);
+      this.filteredItems = this.filterItems(this.searchText);
     }
   }
 

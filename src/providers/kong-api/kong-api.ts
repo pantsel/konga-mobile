@@ -14,6 +14,8 @@ export class KongApiProvider {
 
   url : string = 'kong/apis';
   name : string = 'APIs';
+  searchFields : any = ['name','upstream_url'];
+  listFields  : any = ['name','upstream_url'];
 
   constructor(public http: Http, public api: Api) {
     console.log('Hello KongApiProvider Provider');
