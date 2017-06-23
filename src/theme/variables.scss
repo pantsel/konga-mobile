@@ -129,3 +129,21 @@ code{
 .text-sm{
   font-size: 0.9em;
 }
+
+.toolbar-title {
+  .subtitle {
+    font-size: 66%;
+    margin: 0;
+  }
+}
+
+.item-clear{
+  .item-inner {
+    border-bottom: none !important;
+  }
+
+}
+
+._header{
+  background-color: #f8f8f8;
+}
